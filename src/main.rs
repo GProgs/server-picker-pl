@@ -6,6 +6,7 @@ use enigo::{Enigo,Key,
 };
 use rodio::{Decoder, OutputStream, OutputStreamHandle, Sink};
 use std::{io::Cursor,thread::sleep,time::Duration};
+use sysinfo::{ProcessRefreshKind, RefreshKind, System};
 
 fn main() -> Result<(),InputError> {
     // Servers here
@@ -61,7 +62,7 @@ fn main() -> Result<(),InputError> {
         return Ok(());
     };
 
-    { // Audio scope
+    { // Audio & system scope
 
         // Create audio output stream
         let maybe_audio: Result<_,_> = open_audio();
@@ -82,10 +83,20 @@ fn main() -> Result<(),InputError> {
             return Ok(());
         }
         let source = maybe_source.unwrap();
+
+        // Get launch delay by seeing whether cs2 launched
+        let mut system = System::new_with_specifics(
+            RefreshKind::nothing().with_processes(ProcessRefreshKind::everything()),
+        );
+        let mut procs = system.processes_by_name("cs2".as_ref()); // get Iterator of processes
+        let dt_launch: Duration = match procs.next() { // get launch time
+            Some(_) => conf.dt_launch,
+            None => conf.dt_launch_nocs2
+        };
         
         // Tell them to join the server
-        println!("Liity servulle 30 sekunnissa...");
-        sleep(conf.dt_launch);
+        println!("Liity servulle {} sekunnissa...",dt_launch.as_secs());
+        sleep(dt_launch);
 
         // Play the sound and block current thread
         sink.append(source);

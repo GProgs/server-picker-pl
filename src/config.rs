@@ -7,6 +7,7 @@ use std::time::Duration;
 keys_mvp = '88882'
 key_chat = 'y'
 dt_launch = 30s
+dt_launch_nocs2 = 2m
 dt = 250ms
 
 [menu]
@@ -20,6 +21,8 @@ pub struct Config {
 	pub key_chat: char, // What key you use for chat (i.e. y)
 	#[serde(with = "humantime_serde")]
 	pub dt_launch: Duration,
+	#[serde(with = "humantime_serde")]
+	pub dt_launch_nocs2: Duration, // Launch delay when CS2 not on
 	#[serde(with = "humantime_serde")]
 	pub dt: Duration,
 	pub menu: Menu,

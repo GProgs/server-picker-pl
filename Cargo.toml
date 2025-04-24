@@ -9,4 +9,5 @@ humantime-serde = "1.1.1"
 open = "5"
 rodio = "0.20.1"
 serde = { version = "1.0.219", features = ["derive"] }
+sysinfo = "0.34.2"
 toml = { version = "0.8.20", features = ["parse"] }
