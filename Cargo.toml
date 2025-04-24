@@ -1,9 +1,10 @@
 [package]
 name = "peliluola-picker"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2024"
 
 [dependencies]
+countdown = "0.1.2"
 enigo = "0.3.0"
 humantime-serde = "1.1.1"
 open = "5"

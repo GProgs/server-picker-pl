@@ -228,6 +228,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "countdown"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ed00fdaf891f9f1c63ac1c5a388b5bb4220547dfbf97377acc64c22c84c1a44b"
+
+[[package]]
 name = "cpal"
 version = "0.15.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -772,8 +778,9 @@ checksum = "df94ce210e5bc13cb6651479fa48d14f601d9858cfe0467f43ae157023b938d3"
 
 [[package]]
 name = "peliluola-picker"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
+ "countdown",
  "enigo",
  "humantime-serde",
  "open",

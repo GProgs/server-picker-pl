@@ -51,7 +51,7 @@ impl Menu {
     pub fn pause() -> () {
         println!("Press ENTER to continue");
         let mut _str = String::new();
-        let _ = std::io::stdin().read_line(&mut _str);
+        let _ = io::stdin().read_line(&mut _str);
     }
 
 }

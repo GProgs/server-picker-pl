@@ -1,4 +1,5 @@
 use peliluola_picker::{Config,Menu};
+use countdown::Countdown;
 use enigo::{Enigo,Key,
 	Key::{Unicode,Return},
 	Direction::Click,
@@ -55,8 +56,11 @@ fn main() -> Result<(),InputError> {
         return Ok(());
     };
 
+    // Print command in the event that joining fails
+    println!("Liittymiskomento: \"connect {}\" konsoliin.",&addr);
+
     // Handle IO errors
-    if let Err(e) = open_server(addr) {
+    if let Err(e) = open_server(addr.clone()) {
         println!("IO error while opening. {}",e);
         Menu::pause();
         return Ok(());
@@ -85,7 +89,7 @@ fn main() -> Result<(),InputError> {
         let source = maybe_source.unwrap();
 
         // Get launch delay by seeing whether cs2 launched
-        let mut system = System::new_with_specifics(
+        let system = System::new_with_specifics(
             RefreshKind::nothing().with_processes(ProcessRefreshKind::everything()),
         );
         let mut procs = system.processes_by_name("cs2".as_ref()); // get Iterator of processes
@@ -93,10 +97,20 @@ fn main() -> Result<(),InputError> {
             Some(_) => conf.dt_launch,
             None => conf.dt_launch_nocs2
         };
+        // Convert Duration to usize seconds
+        let dt_launch_secs = match usize::try_from(dt_launch.as_secs()) {
+            Ok(i) => i,
+            Err(e) => {
+                println!("Could not convert dt_launch to usize. {}",e);
+                Menu::pause();
+                return Ok(());
+            }
+        };
         
         // Tell them to join the server
-        println!("Liity servulle {} sekunnissa...",dt_launch.as_secs());
-        sleep(dt_launch);
+        println!("Liity servulle {} sekunnissa...",dt_launch_secs);
+        Countdown::new(dt_launch_secs).start();
+        //sleep(dt_launch);
 
         // Play the sound and block current thread
         sink.append(source);
